@@ -1,16 +1,23 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { removeFromCart } from '../../redux/product-actions/ProductActions'
 
  const Cart = () => {
-    const [total, setTotal] = useState(0)
+    // const [total, setTotal] = useState(0)
     // we have a hook to access the redux store state -- useSelector hook
     const cart_data = useSelector((state) => state.ProductsData.cartData)
+    const dispatch = useDispatch()
     console.log(cart_data)
+
+    const totalPrice = cart_data.reduce((prevsValue, currentValue) => {
+      return prevsValue + currentValue.price
+    }, 0)
+
   return (
     <div>
         <h2>Cart</h2>
         <div>
-            <h3>Total Price: {total}</h3>
+            <h3>Total Price: {totalPrice}</h3>
         </div>
         <div className='container mt-2 border border-dark'>
         {cart_data && cart_data.length ? (
@@ -29,10 +36,11 @@ import { useSelector } from 'react-redux'
                     <div className='col-md-2'>
                       <div>Price: {product.price}</div>
                       <div>
-                        <button className='btn btn-danger'>Remove</button>
+                        <button className='btn btn-danger'
+                        onClick={()=>{dispatch(removeFromCart(product.id))}}
+                        >Remove</button>
                       </div>
                     </div>
-
             </div>
           ))
         ): <p>Please add some products to the cart</p>}

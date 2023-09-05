@@ -10,3 +10,17 @@ export const removeFromCart = (id) => {
         payload: id
     }
 }
+
+export const fetchProducts = () => {
+    return async (dispatch) => {
+        const response = await fetch('https://fakestoreapi.com/products')
+        const data = await response.json()
+        console.log(data)
+        dispatch({type: ACTION_TYPE.FETCH_PRODUCTS, payload: data})
+    }
+
+    // const response = await fetch('https://fakestoreapi.com/products')
+    // const data = await response.json()
+    
+    // return {type: ACTION_TYPE.FETCH_PRODUCTS, payload: data}
+}
